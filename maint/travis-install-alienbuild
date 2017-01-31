@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash -x
+
+set -euo pipefail
+IFS=$'\n\t'
+
+rm -rf /tmp/Alien-Build /tmp/Dist-Zilla-Plugin-AlienBuild /tmp/Test-Alien
+
+cpanm -n Dist::Zilla
 
 git clone --depth 2 https://github.com/plicease/Alien-Build.git /tmp/Alien-Build
 cd /tmp/Alien-Build
