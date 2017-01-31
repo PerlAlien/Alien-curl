@@ -11,17 +11,17 @@ git clone --depth 2 https://github.com/plicease/Alien-Build.git /tmp/Alien-Build
 cd /tmp/Alien-Build
 dzil authordeps --missing | cpanm -n
 dzil listdeps   --missing | cpanm -n
-dzil install
+dzil install --install-command 'cpanm -v .'
 
 git clone --depth 2 https://github.com/plicease/Dist-Zilla-Plugin-AlienBuild.git /tmp/Dist-Zilla-Plugin-AlienBuild
 cd /tmp/Dist-Zilla-Plugin-AlienBuild
 dzil authordeps --missing | cpanm -n
 dzil listdeps   --missing | cpanm -n
-dzil install
+dzil install --install-command 'cpanm -v .'
 
 git clone --depth 2 https://github.com/plicease/Test-Alien.git /tmp/Test-Alien
 cd /tmp/Test-Alien
 dzil authordeps --missing | cpanm -n
 dzil listdeps   --missing | cpanm -n
-dzil install
+dzil install --install-command 'cpanm -v .'
 
