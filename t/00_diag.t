@@ -14,7 +14,6 @@ $modules{$_} = $_ for qw(
   Alien::Build::MM
   ExtUtils::MakeMaker
   IPC::Cmd
-  PkgConfig::LibPkgConf::Client
   Test2::Suite
   Test::Alien
   Test::More
