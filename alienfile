@@ -3,9 +3,9 @@ use alienfile;
 plugin 'PkgConfig' => 'libcurl';
 
 plugin 'Probe::CommandLine' => (
-  command   => 'curl',
+  command   => $_,
   secondary => 1,
-);
+) for qw( curl-config curl );
 
 share {
 
