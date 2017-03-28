@@ -39,7 +39,7 @@ In your Makefile.PL:
       CONFIGURE_REQUIRES => {
         'Alien::curl' => '0',
       },
-      CCFLAGS => Alien::curl->cflags . " $Config{ccflags",
+      CCFLAGS => Alien::curl->cflags . " $Config{ccflags}",
       LIBS    => [ Alien::curl->libs ],
       ...
     );
