@@ -4,12 +4,23 @@ Discover or download and install curl + libcurl
 
 # SYNOPSIS
 
+In your script or module:
+
+    use Alien::curl;
+    use Env qw( @PATH );
+    
+    unshift @ENV, Alien::curl->bin_dir;
+
 In your Build.PL:
 
     use Module::Build;
     use Alien::curl;
     my $builder = Module::Build->new(
       ...
+      configure_requires => {
+        'Alien::curl' => '0',
+        ...
+      },
       extra_compiler_flags => Alien::curl->cflags,
       extra_linker_flags   => Alien::curl->libs,
       ...
@@ -25,9 +36,21 @@ In your Makefile.PL:
     
     WriteMakefile(
       ...
+      CONFIGURE_REQUIRES => {
+        'Alien::curl' => '0',
+      },
       CCFLAGS => Alien::curl->cflags . " $Config{ccflags",
       LIBS    => [ Alien::curl->libs ],
       ...
+    );
+
+In your [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) script or module:
+
+    use FFI::Platypus;
+    use Alien::curl;
+    
+    my $ffi = FFI::Platypus->new(
+      lib => [ Alien::curl->dynamic_libs ],
     );
 
 # DESCRIPTION
