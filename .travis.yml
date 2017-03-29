@@ -2,8 +2,9 @@ language: perl
 sudo: false
 
 install:
-  - ./maint/travis-install-alienbuild
   - perlbrew list
+  - cpanm -n App::af
+  - af missing | cpanm
   - dzil authordeps --missing | cpanm -n
   - dzil listdeps   --missing | cpanm -n
 
