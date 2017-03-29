@@ -16,8 +16,12 @@ perl:
   - "5.24"
 
 env:
-  - ALIEN_INSTALL_TYPE=system
-  - ALIEN_INSTALL_TYPE=share
+  global:
+    - ALIEN_BASE_NO_ABMB=1
+  matrix:
+    - ALIEN_INSTALL_TYPE=system
+    - ALIEN_INSTALL_TYPE=share
 
 script:
   - dzil test -v
+
