@@ -23,6 +23,7 @@ is(
   'protocols supported incudes: http, https, and ftp',
 ) || diag $run->out;
 
+# TODO: also check for http, https and ftp support from API
 xs_ok(
   do { local $/; <DATA> },
   with_subtest {
