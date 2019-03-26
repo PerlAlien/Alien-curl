@@ -9,7 +9,7 @@ In your script or module:
     use Alien::curl;
     use Env qw( @PATH );
     
-    unshift @ENV, Alien::curl->bin_dir;
+    unshift @PATH, Alien::curl->bin_dir;
 
 In your Build.PL:
 
@@ -55,9 +55,9 @@ In your [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) script or module
 
 # DESCRIPTION
 
-This distribution provides curl so that it can be used by other 
-Perl distributions that are on CPAN.  It does this by first trying to 
-detect an existing install of curl on your system.  If found it 
+This distribution provides curl so that it can be used by other
+Perl distributions that are on CPAN.  It does this by first trying to
+detect an existing install of curl on your system.  If found it
 will use that.  If it cannot be found, the source code will be downloaded
 from the internet and it will be installed in a private share location
 for the use of other modules.

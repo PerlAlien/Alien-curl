@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Experimental: require https support
 
 0.06      2017-03-28 14:20:06 -0400
   - Add documentation for usability
