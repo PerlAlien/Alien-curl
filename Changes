@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.07_01   2019-03-26 12:35:58 -0400
   - Experimental: require https support
 
 0.06      2017-03-28 14:20:06 -0400
