@@ -2,7 +2,7 @@ use alienfile;
 use Env::ShellWords qw( @CPPFLAGS @LDFLAGS );
 use Text::ParseWords qw( shellwords );
 
-configure { requires 'Env::ShellWords' };
+configure { requires 'Env::ShellWords' => 0 };
 
 plugin 'PkgConfig' => 'libcurl';
 
@@ -15,14 +15,26 @@ share {
 
   my $alien_ssl = 'Alien::OpenSSL';
 
+  my @acflags = qw( --disable-shared );
+
   # - libressl is easier to install on windows thanks to cmake
   # - libressl is the native SSL on openbsd and would be expected to be used there.
   if($^O eq 'MSWin32' || $^O eq 'openbsd')
   {
     $alien_ssl = 'Alien::LibreSSL';
+    unshift @acflags, '--with-ssl';
+  }
+  elsif($^O eq 'darwin')
+  {
+    unshift @acflags, '--with-darwinssl';
+    undef $alien_ssl;
+  }
+  else
+  {
+    unshift @acflags, '--with-ssl';
   }
 
-  requires $alien_ssl;
+  requires $alien_ssl => 0;
 
   plugin Download => (
     url     => 'https://curl.haxx.se/download/',
@@ -37,23 +49,27 @@ share {
     my $build = shift;
     local $ENV{CPPFLAGS} = $ENV{CPPFLAGS};
     local $ENV{LDFLAGS}  = $ENV{LDFLAGS};
-    unshift @CPPFLAGS, shellwords( $alien_ssl->cflags );
-    unshift @LDFLAGS,  grep /^-L/, shellwords( $alien_ssl->libs   );
-    log "using CPPFLAGS = $ENV{CPPFLAGS}";
-    log "using LDFLAGS = $ENV{LDFLAGS}";
+    if($alien_ssl)
+    {
+      unshift @CPPFLAGS, shellwords( $alien_ssl->cflags );
+      unshift @LDFLAGS,  grep /^-L/, shellwords( $alien_ssl->libs   );
+      log "using CPPFLAGS = $ENV{CPPFLAGS}";
+      log "using LDFLAGS = $ENV{LDFLAGS}";
+    }
     $orig->($build, @_);
   });
 
   plugin 'Build::Autoconf' => ();
 
   build [
-    '%{configure} --disable-shared --with-ssl',
+    "%{configure} @acflags",
     '%{make}',
     '%{make} install',
   ];
 
   after gather => sub {
     my $build = shift;
+    return unless $alien_ssl;
     $build->install_prop->{libs_static} = join(' ',
       $build->install_prop->{libs_static},
       grep /^-L/,
