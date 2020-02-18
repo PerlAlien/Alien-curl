@@ -20,7 +20,7 @@ share {
   # - schannel is the native SSL on windows
   if($^O eq 'MSWin32')
   {
-    unshift @acflags, '--with-schannel';
+    unshift @acflags, '--with-schannel', '--without-ssl';
     undef $alien_ssl;
   }
   # - libressl is the native SSL on openbsd and would be expected to be used there.
@@ -32,7 +32,7 @@ share {
   # - macOS has its own native SSL implementation which is supported by curl
   elsif($^O eq 'darwin')
   {
-    unshift @acflags, '--with-darwinssl';
+    unshift @acflags, '--with-darwinssl', '--without-ssl';
     undef $alien_ssl;
   }
   # - elsewhere OpenSSL is probably a reasonable option
