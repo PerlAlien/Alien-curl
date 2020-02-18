@@ -1,4 +1,4 @@
-# Alien::curl [![Build Status](https://secure.travis-ci.org/plicease/Alien-curl.png)](http://travis-ci.org/plicease/Alien-curl) ![windows](https://github.com/plicease/Alien-curl/workflows/windows/badge.svg) ![macos-system](https://github.com/plicease/Alien-curl/workflows/macos-system/badge.svg)
+# Alien::curl [![Build Status](https://secure.travis-ci.org/Perl5-Alien/Alien-curl.png)](http://travis-ci.org/Perl5-Alien/Alien-curl) ![windows](https://github.com/Perl5-Alien/Alien-curl/workflows/windows/badge.svg) ![macos-system](https://github.com/Perl5-Alien/Alien-curl/workflows/macos-system/badge.svg)
 
 Discover or download and install curl + libcurl
 
