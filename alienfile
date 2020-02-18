@@ -34,7 +34,10 @@ share {
     unshift @acflags, '--with-ssl';
   }
 
-  requires $alien_ssl => 0;
+  if($alien_ssl)
+  {
+    requires $alien_ssl => 0;
+  }
 
   plugin Download => (
     url     => 'https://curl.haxx.se/download/',
