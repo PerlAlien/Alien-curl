@@ -17,18 +17,25 @@ share {
 
   my @acflags = qw( --disable-shared );
 
-  # - libressl is easier to install on windows thanks to cmake
+  # - schannel is the native SSL on windows
+  if($^O eq 'MSWin32')
+  {
+    unshift @acflags, '--with-schannel';
+    undef $alien_ssl;
+  }
   # - libressl is the native SSL on openbsd and would be expected to be used there.
-  if($^O eq 'MSWin32' || $^O eq 'openbsd')
+  elsif($^O eq 'openbsd')
   {
     $alien_ssl = 'Alien::LibreSSL';
     unshift @acflags, '--with-ssl';
   }
+  # - macOS has its own native SSL implementation which is supported by curl
   elsif($^O eq 'darwin')
   {
     unshift @acflags, '--with-darwinssl';
     undef $alien_ssl;
   }
+  # - elsewhere OpenSSL is probably a reasonable option
   else
   {
     unshift @acflags, '--with-ssl';
