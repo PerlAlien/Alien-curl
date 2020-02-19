@@ -12,9 +12,11 @@ fi
 if echo $CIP_ENV | grep -q system; then
   echo use system curl
   cip sudo apt-get update
-  cip sudo apt-get -y install libcurl4-openssl-dev
+  cip sudo apt-get -y install libcurl4-openssl-dev libffi-dev
 else
   echo use internet curl
   cip sudo apt-get update
-  cip sudo apt-get -y install g++
+  cip sudo apt-get -y install g++ libffi-dev
 fi
+
+cip exec cpanm -n FFI::Platypus
