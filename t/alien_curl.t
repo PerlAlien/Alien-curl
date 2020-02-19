@@ -7,6 +7,14 @@ alien_ok 'Alien::curl';
 
 alien_diag 'Alien::curl';
 
+my $proto_check = hash {
+  field http  => T();
+  field https => T();
+  field ftp   => T();
+  etc;
+};
+
+
 subtest 'command line' => sub {
 
   my $run = run_ok(['curl', '--version']);
@@ -18,12 +26,7 @@ subtest 'command line' => sub {
 
   is(
     \%protocols,
-    hash {
-      field http  => T();
-      field https => T();
-      field ftp   => T();
-      etc;
-    },
+    $proto_check,
     'protocols supported incudes: http, https, and ftp',
   ) || diag $run->out;
 
@@ -35,6 +38,14 @@ xs_ok(
     my $version = Curl::curl_version();
     ok $version, "version returned ok";
     note "version = $version";
+    my @proto = @{ Curl::curl_protocols() };
+    note "proto   = $_" for @proto;
+    my %proto = map { $_ => 1 } @proto;
+    is(
+      \%proto,
+      $proto_check,
+      'protocols supported incudes: http, https, and ftp',
+    ) || diag "proto: @proto";
   }
 );
 
@@ -60,3 +71,18 @@ MODULE = Curl PACKAGE = Curl
 
 const char *
 curl_version()
+
+AV*
+curl_protocols()
+  PREINIT:
+    size_t i;
+    curl_version_info_data *data;
+  CODE:
+    data = curl_version_info(CURLVERSION_NOW);
+    RETVAL = (AV*) sv_2mortal((SV*)newAV());
+    for(i=0; data->protocols[i] != NULL; i++)
+    {
+      av_push(RETVAL, newSVpv(data->protocols[i], strlen(data->protocols[i])));
+    }
+  OUTPUT:
+    RETVAL
