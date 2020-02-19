@@ -26,6 +26,7 @@ jobs:
       - name: Set up Perl
         run: |
           brew install perl
+          brew install libffi
           curl https://cpanmin.us | perl - App::cpanminus -n
           echo "##[add-path]/Users/runner/perl5/bin"
 
@@ -48,6 +49,7 @@ jobs:
       - name: Install Static Dependencies
         run: |
           cpanm -n Dist::Zilla
+          cpanm -n FFI::Platypus
           dzil authordeps --missing | cpanm -n
           dzil listdeps --missing   | cpanm -n
       - name: Install Dynamic Dependencies
