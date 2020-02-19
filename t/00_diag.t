@@ -15,20 +15,14 @@ $modules{$_} = $_ for qw(
   Alien::Build::MM
   Env::ShellWords
   ExtUtils::MakeMaker
+  FFI::CheckLib
   Test2::V0
   Test::Alien
+  Test::Alien::Diag
   Test::More
 );
 
-$post_diag = sub {
-  require Alien::curl;
-  diag "version       = ", Alien::curl->version;
-  diag "cflags        = ", Alien::curl->cflags;
-  diag "cflags_static = ", Alien::curl->cflags_static;
-  diag "libs          = ", Alien::curl->libs;
-  diag "libs_static   = ", Alien::curl->libs_static;
-  diag "bin_dir       = ", $_ for Alien::curl->bin_dir;
-};
+
 
 my @modules = sort keys %modules;
 

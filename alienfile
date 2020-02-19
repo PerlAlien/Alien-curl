@@ -1,8 +1,9 @@
 use alienfile;
 use Env::ShellWords qw( @CPPFLAGS @LDFLAGS );
 use Text::ParseWords qw( shellwords );
+use FFI::CheckLib qw( find_lib_or_die );
 
-configure { requires 'Env::ShellWords' => 0 };
+configure { requires 'Env::ShellWords' => 0; requires 'FFI::CheckLib' => 0 };
 
 plugin 'PkgConfig' => 'libcurl';
 
@@ -11,11 +12,23 @@ plugin 'Probe::CommandLine' => (
   secondary => 1,
 ) for qw( curl-config curl );
 
+meta->around_hook(probe => sub {
+  my $orig = shift;
+  my $build = shift;
+
+  my $type = $orig->($build,@_);
+  if($type eq 'system')
+  {
+    find_lib_or_die lib => 'curl';
+  }
+  $type;
+});
+
 share {
 
   my $alien_ssl = 'Alien::OpenSSL';
 
-  my @acflags = qw( --disable-shared );
+  my @acflags;
 
   # - schannel is the native SSL on windows
   if($^O eq 'MSWin32')
@@ -72,7 +85,7 @@ share {
   plugin 'Build::Autoconf' => ();
 
   build [
-    "%{configure} @acflags",
+    "%{configure} --disable-shared --enable-static @acflags",
     '%{make}',
     '%{make} install',
   ];
@@ -85,6 +98,14 @@ share {
       grep /^-L/,
       shellwords( $alien_ssl->libs ),
     );
+  };
+
+  ffi {
+    build [
+      "%{configure} --enable-shared --disable-static --libdir=%{.install.autoconf_prefix}/dynamic @acflags",
+      '%{make}',
+      '%{make} install',
+    ];
   };
 
 };
