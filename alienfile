@@ -100,11 +100,25 @@ share {
     );
   };
 
+  requires 'Path::Tiny';
+
   ffi {
     build [
       "%{configure} --enable-shared --disable-static --libdir=%{.install.autoconf_prefix}/dynamic @acflags",
       '%{make}',
       '%{make} install',
+      sub {
+        my $build = shift;
+        return unless $^O eq 'MSWin32';
+        my $root = Path::Tiny->new($ENV{DESTDIR})->child($build->install_prop->{autoconf_prefix});
+        log "re-routing DLLs in $root";
+        foreach my $from (grep /\.dll$/i, $root->child('bin')->children)
+        {
+          my $to = $root->child('dynamic', $from->basename);
+          log "move $from => $to";
+          $from->move($to);
+        }
+      },
     ];
   };
 
