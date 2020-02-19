@@ -56,6 +56,54 @@ ffi_ok(
     my $version = $ffi->function( curl_version => [] => 'string' )->call;
     ok $version, "version returned ok";
     note "version = $version";
+
+    # we wrap this in an eval because there are features that may not
+    # be supported by whatever version of Platypus is installed.
+    # in particular `enum` was introduced sometime around 2.00
+    my $curl_version_info = eval {
+      {
+        package
+          Curl::Version;
+        require FFI::Platypus::Record;
+        FFI::Platypus::Record::record_layout(
+          'enum'     => 'age',
+          'string'   => 'version',
+          'uint'     => 'version_num',
+          'string'   => 'host',
+          'int'      => 'features',
+          'string'   => 'ssl_version',
+          'ulong'    => 'ssl_version_num',
+          'string'   => 'libz_version',
+          'opaque'   => 'protocols',
+        );
+      }
+      $ffi->function( curl_version_info => ['enum'] => 'record(Curl::Version)' );
+    };
+    if(my $error = $@)
+    {
+      note "error looking for curl_version_info";
+      note $error;
+    }
+    else
+    {
+      my $version = $curl_version_info->call(0);
+      note "age             = ", $version->age;
+      note "version         = ", $version->version;
+      note "version_num     = ", $version->version_num;
+      note "host            = ", $version->host;
+      note "features        = ", $version->features;
+      note "ssl_version     = ", $version->ssl_version;
+      note "ssl_version_num = ", $version->ssl_version_num;
+      note "libz_version    = ", $version->libz_version;
+      my @proto = @{ $ffi->cast('opaque', 'string[]', $version->protocols()) };
+      note "proto   = $_" for @proto;
+      my %proto = map { $_ => 1 } @proto;
+      is(
+        \%proto,
+        $proto_check,
+        'protocols supported incudes: http, https, and ftp',
+      ) || diag "proto: @proto";
+    }
   }
 );
 
