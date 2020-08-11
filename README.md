@@ -1,4 +1,4 @@
-# Alien::curl [![Build Status](https://secure.travis-ci.org/Perl5-Alien/Alien-curl.png)](http://travis-ci.org/Perl5-Alien/Alien-curl) ![windows](https://github.com/Perl5-Alien/Alien-curl/workflows/windows/badge.svg) ![macos-system](https://github.com/Perl5-Alien/Alien-curl/workflows/macos-system/badge.svg) ![macos-share](https://github.com/Perl5-Alien/Alien-curl/workflows/macos-share/badge.svg)
+# Alien::curl [![Build Status](https://travis-ci.org/PerlAlien/Alien-curl.svg)](http://travis-ci.org/PerlAlien/Alien-curl) ![windows](https://github.com/PerlAlien/Alien-curl/workflows/windows/badge.svg) ![macos-system](https://github.com/PerlAlien/Alien-curl/workflows/macos-system/badge.svg) ![macos-share](https://github.com/PerlAlien/Alien-curl/workflows/macos-share/badge.svg)
 
 Discover or download and install curl + libcurl
 
@@ -13,41 +13,38 @@ use Env qw( @PATH );
 unshift @PATH, Alien::curl->bin_dir;
 ```
 
+In your Makefile.PL:
+
+```perl
+use ExtUtils::MakeMaker;
+use Alien::Base::Wrapper ();
+
+WriteMakefile(
+  Alien::Base::Wrapper->new('Alien::curl')->mm_args2(
+    # MakeMaker args
+    NAME => 'My::XS',
+    ...
+  ),
+);
+```
+
 In your Build.PL:
 
 ```perl
 use Module::Build;
-use Alien::curl;
+use Alien::Base::Wrapper qw( Alien::curl !export );
+
 my $builder = Module::Build->new(
   ...
   configure_requires => {
     'Alien::curl' => '0',
     ...
   },
-  extra_compiler_flags => Alien::curl->cflags,
-  extra_linker_flags   => Alien::curl->libs,
+  Alien::Base::Wrapper->mb_args,
   ...
 );
 
 $build->create_build_script;
-```
-
-In your Makefile.PL:
-
-```perl
-use ExtUtils::MakeMaker;
-use Config;
-use Alien::curl;
-
-WriteMakefile(
-  ...
-  CONFIGURE_REQUIRES => {
-    'Alien::curl' => '0',
-  },
-  CCFLAGS => Alien::curl->cflags . " $Config{ccflags}",
-  LIBS    => [ Alien::curl->libs ],
-  ...
-);
 ```
 
 In your [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus) script or module:
