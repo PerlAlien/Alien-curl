@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.08      2020-09-02 04:52:20 -0600
   - Install curl-config into /dynamic directory for share install
     (gh#10, gh#11, gh#13, shawnlaffan++)
 
