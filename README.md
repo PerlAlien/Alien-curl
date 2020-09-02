@@ -73,7 +73,11 @@ for the use of other modules.
 
 # AUTHOR
 
-Graham Ollis <plicease@cpan.org>
+Author: Graham Ollis <plicease@cpan.org>
+
+Contributors:
+
+Shawn Laffan (SLAFFAN)
 
 # COPYRIGHT AND LICENSE
 
