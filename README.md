@@ -1,4 +1,4 @@
-# Alien::curl ![linux](https://github.com/PerlAlien/Alien-curl/workflows/linux/badge.svg) ![windows](https://github.com/PerlAlien/Alien-curl/workflows/windows/badge.svg) ![macos-system](https://github.com/PerlAlien/Alien-curl/workflows/macos-system/badge.svg) ![macos-share](https://github.com/PerlAlien/Alien-curl/workflows/macos-share/badge.svg)
+# Alien::curl ![static](https://github.com/PerlAlien/Alien-curl/workflows/static/badge.svg) ![linux](https://github.com/PerlAlien/Alien-curl/workflows/linux/badge.svg) ![windows](https://github.com/PerlAlien/Alien-curl/workflows/windows/badge.svg) ![macos](https://github.com/PerlAlien/Alien-curl/workflows/macos/badge.svg)
 
 Discover or download and install curl + libcurl
 
@@ -81,7 +81,7 @@ Shawn Laffan (SLAFFAN)
 
 # COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2017 by Graham Ollis.
+This software is copyright (c) 2017-2022 by Graham Ollis.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
