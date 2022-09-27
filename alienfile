@@ -64,6 +64,16 @@ share {
     {
       requires $alien_ssl => 0;
     }
+
+    # Build::SearchDep should have an option to do just this
+    # without modifying the build stage
+    # https://github.com/PerlAlien/Alien-Build/issues/373
+    meta->after_hook(
+      gather_share => sub {
+        my($build) = @_;
+        $build->runtime_prop->{$_} .= $alien_ssl->$_ for qw( libs libs_static cflags cflags_static );
+      }
+    );
   }
 
   plugin Download => (
