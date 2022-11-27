@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.11      2022-11-27 02:16:14 -0700
   - Fixes for recent versions of curl source on windows
     (gh#19, gh#20, shawnlaffan++)
 
