@@ -16,7 +16,7 @@ if echo $CIP_ENV | grep -q system; then
 else
   echo use internet curl
   cip sudo apt-get update
-  cip sudo apt-get -y install g++ libffi-dev
+  cip sudo apt-get -y install g++ libffi-dev libpsl-dev
 fi
 
 cip exec env ALIEN_INSTALL_TYPE=default cpanm -n FFI::Platypus
